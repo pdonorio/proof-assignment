@@ -1,0 +1,67 @@
+
+version: '3'
+
+services:
+
+  ##########################
+  ## CONTAINERS (and dependencies)
+  ##########################
+
+  # postgres:
+  #   environment:
+  #     POSTGRES_USER: "${ALCHEMY_USER}"
+  #     POSTGRES_PASSWORD: "${ALCHEMY_PASSWORD}"
+  #     POSTGRES_DBS: ${ALCHEMY_API_DB}
+
+  backend:
+    user: root
+    command: "docker-entrypoint run-notebook"
+    environment:
+      ACTIVATE: 1
+      # FLASK_DEBUG: 1
+      # TESTING: 0
+      # DEBUG_ENDPOINTS: 1
+      # MAIN_LOGIN_ENABLE: 1
+      # PROFILE_DISABLED: 0
+      # DEBUG_LEVEL: VERY_VERBOSE
+      # DEBUG_LEVEL: VERBOSE
+      # APP_MODE: debug
+    ports:
+      # - 8080:${FLASK_DEFAULT_PORT}
+      - ${NOTEBOOK_SERVER_PORT}:${NOTEBOOK_SERVER_PORT}
+    volumes:
+      - ${VANILLA_DIR}/data/scripts/notebook-startup.sh:/usr/local/bin/run-notebook
+      - ${VANILLA_DIR}/projects/${COMPOSE_PROJECT_NAME}/notebooks:/code/notebooks
+      - ${VANILLA_DIR}/projects/${COMPOSE_PROJECT_NAME}/backend/requirements.txt:/tmp/requirements.txt
+      - ${VANILLA_DIR}/data/scripts/add-libraries.sh:/docker-entrypoint.d/addlib.sh
+    depends_on:
+      - mongodb
+      - postgres
+
+  # react:
+  #   # command: yarn start
+  #   # command: sleep 1234567890
+  #   environment:
+  #     APP_MODE: debug
+  #     API_URL: http://localhost:8080/api/
+  #   ports:
+  #     - ${REACT_DEFAULT_PORT}:${REACT_DEFAULT_PORT}
+
+  ##########################
+  ## INTERFACES
+  ##########################
+  # swaggerui:
+  #   environment:
+  #     API_URL: http://localhost:8080/api/specs
+  #   ports:
+  #     - 80:8080
+
+  mongoui:
+    # http://localhost
+    ports:
+      - 8081:8081
+
+  sqlalchemyui:
+    # http://localhost:8082/?pgsql=psqldb.dockerized.io&username=admin&db=proof
+    ports:
+      - 8082:8080

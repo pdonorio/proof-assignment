@@ -1,0 +1,10 @@
+
+file: article
+class: Articles
+schema:
+  expose: true
+mapping:
+  allarticles: "/articles"
+  article: "/articles/<url>"
+labels:
+  - custom

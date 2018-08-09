@@ -1,0 +1,14 @@
+common:
+  custom:
+    authentication: false
+
+allarticles:
+  summary: Unauthenticated article posting
+  responses:
+    '200':
+      description: create a new article entry in Mongo!
+  # parameters:
+  #   - name: URI
+  #     in: query
+  #     type: string
+  #     description: the URI for the articles submitted

@@ -1,0 +1,15 @@
+common:
+  custom:
+    authentication: false
+
+article:
+  summary: Unauthenticated article endpoint
+  responses:
+    '200':
+      description: single article
+
+allarticles:
+  summary: Unauthenticated article endpoint
+  responses:
+    '200':
+      description: list of articles

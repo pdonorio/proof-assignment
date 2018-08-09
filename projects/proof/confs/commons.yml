@@ -1,0 +1,89 @@
+version: '3'
+
+# volumes:
+#   tmpuploads:
+#     driver: local
+
+services:
+
+  ######################################
+  backend:
+    volumes:
+      - ${VANILLA_DIR}/data:/data
+    #   # Uploads dir
+    #   - tmpuploads:${UPLOAD_PATH}
+    environment:
+      LINES: 28
+      COLUMNS: 160
+      AUTH_ENABLE: 1
+      AUTH_SERVICE: ${AUTH_SERVICE}
+      # MAIN_LOGIN_ENABLE: 0  # this could disable the basic /auth/login method
+      # PROFILE_DISABLED: 1   # disable /auth/profile operations
+      # ADMINER_DISABLED: 1   # disable /admin/users operations
+      ##############################
+      # set this inside the MODE yaml files you want to use
+      # FLASK_DEBUG: 1
+      DEBUG_LEVEL: VERY_VERBOSE
+      APP_MODE: debug
+      ##############################
+      VANILLA_PACKAGE: ${COMPOSE_PROJECT_NAME}
+      PROJECT_DOMAIN: ${PROJECT_DOMAIN}
+      JWT_APP_SECRETS: ${JWT_APP_SECRETS}
+      # UPLOAD_PATH: ${UPLOAD_PATH}
+      ##############################
+      ## SERVICES
+      # mongodb connection
+      MONGO_ENABLE: 1
+      MONGO_HOST: ${MONGO_HOST}
+      MONGO_DATABASE: ${MONGO_DATABASE}
+      MONGO_PORT: ${MONGO_PORT}
+      # # relational db
+      # ALCHEMY_ENABLE: 0
+      # ALCHEMY_HOST: ${ALCHEMY_HOST}
+      # ALCHEMY_PORT: ${ALCHEMY_PORT}
+      # ALCHEMY_USER: ${ALCHEMY_USER}
+      # ALCHEMY_PASSWORD: ${ALCHEMY_PASSWORD}
+      # ALCHEMY_DB: ${ALCHEMY_API_DB}
+      # ALCHEMY_POOLSIZE: ${ALCHEMY_POOLSIZE}
+      # # neo connection
+      # GRAPHDB_ENABLE: 0
+      # # # GRAPHDB_ENABLE: 1
+      # # GRAPHDB_HOST: ${GRAPHDB_HOST}
+      # # GRAPHDB_PORT: ${GRAPHDB_BOLT_PORT}
+      # # GRAPHDB_PASSWORD: ${GRAPHDB_PASSWORD}
+      AUTH_FULL_JWT_PAYLOAD: ${FULL_JWT}
+
+  ######################################
+  react:
+    build:
+      context: ${SUBMODULE_DIR}/build-templates/react
+      args:
+        RAPYDO_VERSION: ${RAPYDO_VERSION}
+        CURRENT_UID: ${CURRENT_UID}
+    image: rapydo/react:${RAPYDO_VERSION}
+    environment:
+      ACTIVATE: ${FRONTEND_ENABLE}
+      PROJECT_DOMAIN: ${PROJECT_DOMAIN}
+      # BACKEND_PORT: 8080
+      # BACKEND_HOST: ${PROJECT_DOMAIN}
+      # PROJECT_TITLE: ${PROJECT_TITLE}
+    hostname: frontend
+    working_dir: /app
+    volumes:
+      - ${VANILLA_DIR}/projects/${COMPOSE_PROJECT_NAME}/frontend:/app
+      # to build ?
+      - ${VANILLA_DIR}/projects/${COMPOSE_PROJECT_NAME}/frontend/package.json:/rapydo/package.json
+
+  # #####################################
+  # postgres:
+  #   environment:
+  #     POSTGRES_USER: "${ALCHEMY_USER}"
+  #     POSTGRES_PASSWORD: "${ALCHEMY_PASSWORD}"
+  #     # POSTGRES_DBS: ${ALCHEMY_DBS}
+  #     POSTGRES_DBS: ${ALCHEMY_API_DB}
+
+  #####################################
+  proxy:
+    environment:
+      PROJECT_DOMAIN: ${PROJECT_DOMAIN}
+      # SMTP_ADMIN: ${SMTP_ADMIN}

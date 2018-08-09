@@ -1,0 +1,10 @@
+
+file: example
+class: Examples
+schema:
+  expose: true
+mapping:
+  allexamples: "/examples"
+  singleexample: "/examples/<example_id>"
+labels:
+  - custom

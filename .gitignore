@@ -1,0 +1,33 @@
+.env
+#.projectrc
+*.log
+
+projects/*/frontend/*lock
+projects/*/frontend/node_modules
+projects/*/frontend/build
+.ipynb_checkpoints
+
+#################
+##  Submodules ##
+#################
+
+submodules/.backup
+submodules/build-templates
+submodules/utils
+submodules/http-api
+submodules/frontend
+submodules/rapydo-confs
+submodules/do
+
+#################
+##  Tools      ##
+#################
+
+# notebooks
+.ipynb_checkpoint
+# Sublime text
+*.sublime-*
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+

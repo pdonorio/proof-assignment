@@ -1,0 +1,44 @@
+
+version: '3'
+
+services:
+
+  backend:
+    #command: restapi launch
+    environment:
+      ACTIVATE: 1
+      FLASK_DEBUG: 0
+      TESTING: 0
+      DEBUG_ENDPOINTS: 0
+      # APP_MODE: debug
+      APP_MODE: development
+      DEBUG_LEVEL: INFO
+      # DEBUG_LEVEL: VERY_VERBOSE
+      # MAIN_LOGIN_ENABLE: 1
+      # PROFILE_DISABLED: 0
+    # ports:
+    #   - 8080:${FLASK_DEFAULT_PORT}
+    depends_on:
+      - mongodb
+
+  ########################
+  react:
+    # command: sleep 1234567890
+    environment:
+      ACTIVATE: 0
+      APP_MODE: development
+      API_URL: http://${PROJECT_DOMAIN}/api/
+    # ports:
+    #   - 80:5000
+
+  ########################
+  proxy:
+    environment:
+      ACTIVATE: 1
+      API_URL: http://${PROJECT_DOMAIN}/api/
+    volumes:
+      # no SSL
+      - ${VANILLA_DIR}/projects/${COMPOSE_PROJECT_NAME}/confs/nginx/dev.conf:/etc/nginx/sites-enabled/remotedev
+      - ${VANILLA_DIR}/projects/${COMPOSE_PROJECT_NAME}/frontend/build:/usr/share/nginx/game
+    ports:
+      - ${PROXY_DEV_PORT}:${PROXY_DEV_PORT}

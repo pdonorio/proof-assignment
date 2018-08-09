@@ -1,0 +1,6 @@
+
+project: proof
+log-level: INFO
+mode: debug
+# backend: true
+development: True

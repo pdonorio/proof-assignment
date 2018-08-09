@@ -1,9 +1,0 @@
-common:
-  custom:
-    authentication: false
-
-allexamples:
-  summary: Unauthenticated example posting
-  responses:
-    '200':
-      description: the object created

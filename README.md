@@ -23,9 +23,12 @@ If you do want to continue, please:
 - Developing [**WORK IN PROGRESS**]
     + suggestion: organize your work [in a markdown list](projects/proof/notes/todo.md)
     + TODO: add libraries to the project
-    + TODO: edit the main class code
-    + TODO: call from command line
-    + TODO: call from UI client
+    rapydo --services backend build
+        + TODO: edit the main class code
+        + TODO: call from command line
+    + TODO: interfaces
+        + TODO: checkout mongo db from UI
+        + TODO: call from swagger UI
     + TODO: write unittests
 - Feedback
     + https://gitter.im/rapydo

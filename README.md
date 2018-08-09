@@ -17,10 +17,13 @@ If you do want to continue, please:
     - Dig more the [necessary tool stack](docs/assignment/stack.md)
 - About the `RAPyDo` framework
     + brief [intro](docs/rapydo/intro.md)
-    + [install](docs/rapydo/install.md) what you need
-    + [clone and start](docs/rapydo/start.md) your project 
-- Developing
-    + launch [debug flask instance]()
+    + [clone and install](docs/rapydo/install.md) what you need
+    + launch your first [debug flask instance](docs/rapydo/start.md)
+- Developing [**WORK IN PROGRESS**]
     + organize your work [in a markdown list](projects/proof/notes/todo.md)
     + TODO: add libraries to the project
+    + TODO: edit the main class code
+    + TODO: call from command line
+    + TODO: call from UI client
+    + TODO: write unittests
 

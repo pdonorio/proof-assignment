@@ -1,21 +1,26 @@
 
-# Submissions of web articles/posts
+# backend development
 
-The task is to create:
+## submissions of web articles/posts
 
-- backend APIs to submit a URL
-    + the APIs download the content of a post/article from there
-    + the downloaded content is HTML parsed to get authors/dates/tags and any interesting metadata
-    + no duplicates is allowed (same URL, same title)
-    + the metadata and the text of the article is stored in a mongodb collection
-- frontend react UI views
-    + to submit URL to the APIs above
-    + to list the articles submitted
-    + to show one single article content
+We need to create APIs on a Flask backend to download and parse articles submitted from simple web URLs.
+
+- the APIs download the content of a post/article from there
+- the downloaded content is HTML-parsed 
+    + you can add your Python library of preference there
+    + get authors/dates/tags and any interesting metadata, the more the better
+- the metadata and the text of the article is stored in db
+    + mongodb collection
+- duplicates are not allowed
+    + of course not same URL
+    + same title or very close to it
+- similar content should be flagged
+    + e.g. above 80% of similarity with existing
 
 Also:
-- Unittests are required.
-- No authentication is required.
-- The task can be developed in any language.
-- Using at least two containers (frontend and backend) is a plus.
-- Instructions to install and run the projects are required.
+- No authentication is required at the moment
+    + it would be easily added with minor changes through the framework
+- No asynchronous/background task are required in this exercise
+    + it's ok if it's slow in checking duplicates
+    + for future reference: `RAPyDo` integrates `celery`
+

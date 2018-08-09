@@ -13,16 +13,19 @@ The list of requirements to use the rapydo framework:
 Download the repo
 
 ```bash
-git clone ssh://git@git.proofmedia.io:2222/apps/base-platform.git
-cd base-platform
-# copy a projectrc to set your defaults from now on
-cp templates/debug.rc .projectrc
+git clone https://github.com/GIT_LINK mytask
+cd mytask
 ```
 
 Install (or update) the rapydo controller
 
 ```bash
 sudo -H pip3 install --upgrade -r requirements.txt
+```
+
+Check if it works:
+```bash
+rapydo version
 ```
 
 <!--

@@ -30,7 +30,10 @@ If you do want to continue, please:
         + TODO: checkout mongo db from UI
         + TODO: call from swagger UI
     + TODO: write unittests
-- Feedback
-    + https://gitter.im/rapydo
-    + https://github.com/rapydo/issues/issues
+    + TODO: add a new endpoint
+- Feedback on exercise and framework
+    + You can [open an issue](https://github.com/rapydo/issues/issues)
+    + You can [chat](https://gitter.im/rapydo) with us
+    + Or you may email who gave you the exercise (if that is how you've got here) for direct questions on the assignment
+
 

@@ -3,6 +3,7 @@
 
 We (both us and you) will probably learn from this little coding exercise:
 
+- reading carefully before doing anything!
 - try to be better
     + apply as many best practices as you can 
         * (that don't slow you down too much)

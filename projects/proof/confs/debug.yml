@@ -48,7 +48,7 @@ services:
 
   mongoui:
     ports:
-      - 80:8081
+      - 8081:8081
 
   # sqlalchemyui:
   #   # http://localhost:8082/?pgsql=psqldb.dockerized.io&username=rods&db=ICAT

@@ -20,6 +20,7 @@ If you do want to continue, please:
     + brief [intro](docs/rapydo/intro.md)
     + [clone and install](docs/rapydo/install.md) what you need
     + launch your first [debug flask instance](docs/rapydo/start.md)
+    + [remove everything](docs/rapydo/rm.md) when completed
 - Developing [**WORK IN PROGRESS**]
     + suggestion: organize your work [in a markdown list](projects/proof/notes/todo.md)
     + then [get your hands dirty](docs/devel/handsdirty.md)

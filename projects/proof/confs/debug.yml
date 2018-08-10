@@ -28,14 +28,13 @@ services:
       - mongodb
       # - postgres
 
-  # react:
-  #   # command: yarn start
-  #   # command: sleep 1234567890
-  #   environment:
-  #     APP_MODE: debug
-  #     API_URL: http://localhost:8080/api/
-  #   ports:
-  #     - ${REACT_DEFAULT_PORT}:${REACT_DEFAULT_PORT}
+  react:
+    # command: sleep 1234567890
+    environment:
+      APP_MODE: debug
+      API_URL: http://localhost:8080/api/
+    ports:
+      - ${REACT_DEFAULT_PORT}:${REACT_DEFAULT_PORT}
 
   ##########################
   ## INTERFACES

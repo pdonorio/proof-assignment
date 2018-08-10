@@ -9,7 +9,6 @@ variables:
   env:
     AUTH_SERVICE: mongo
     MONGO_DATABASE: proof
-    FRONTEND_ENABLE: 0
+    FRONTEND_ENABLE: 1
     TOKEN_DEFAULT_TTL: 86400 # 1 day in seconds
     REACT_DEFAULT_PORT: 5000
-    # NOTEBOOK_SERVER_PORT: 8888

@@ -1,7 +1,7 @@
 
 # working @Proof
 
-If you want to get a glimpse of how it looks like working at [Proof](https://proofmedia.io/) as a Pythonista developer on Backend APIs, you can try to have fun a few days with this "repo exercise".
+If you want to get a glimpse of how it looks like working at [Proof](https://proofmedia.io/) as a React developer on Frontend interaction with Backend APIs, you can try to have fun a few days with this "repo exercise".
 
 If you do want to continue, please:
 
@@ -23,9 +23,10 @@ If you do want to continue, please:
     + [remove everything](docs/rapydo/rm.md) when completed
 - Developing
     + suggestion: organize your work [in a markdown list](projects/proof/notes/todo.md)
+    + then [get your hands dirty](docs/devel/reacthd.md)
+    + explore the APIs and the data with some [pre-configured UI](docs/devel/uis.md) services
 <!--
     + then [get your hands dirty](docs/devel/handsdirty.md)
-    + explore the APIs and the data with some [pre-configured UI](docs/devel/uis.md) services
     + if you prefere a TDD approach, you may (and should) [write unittests](docs/devel/unittests.md)
     + you can also [add a new endpoint](docs/devel/new.md)
 -->

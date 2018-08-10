@@ -19,9 +19,9 @@ services:
       # DEBUG_LEVEL: VERY_VERBOSE
       DEBUG_LEVEL: VERBOSE
       # APP_MODE: debug
-    volumes:
-      - ${VANILLA_DIR}/projects/${COMPOSE_PROJECT_NAME}/backend/requirements.txt:/tmp/requirements.txt
-      - ${VANILLA_DIR}/data/scripts/add-libraries.sh:/docker-entrypoint.d/addlib.sh
+    # volumes:
+    #   - ${VANILLA_DIR}/projects/${COMPOSE_PROJECT_NAME}/backend/requirements.txt:/tmp/requirements.txt
+    #   - ${VANILLA_DIR}/data/scripts/add-libraries.sh:/docker-entrypoint.d/addlib.sh
     ports:
       - 8080:${FLASK_DEFAULT_PORT}
     depends_on:
@@ -48,7 +48,7 @@ services:
 
   mongoui:
     ports:
-      - 80:8081
+      - 8081:8081
 
   # sqlalchemyui:
   #   # http://localhost:8082/?pgsql=psqldb.dockerized.io&username=rods&db=ICAT

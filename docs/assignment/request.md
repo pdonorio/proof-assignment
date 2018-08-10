@@ -8,7 +8,11 @@ We need to create APIs on a Flask backend to download and parse articles submitt
 - the APIs download the content of a post/article from there
 - the downloaded content is HTML-parsed 
     + you can add your Python library of preference there
-    + get authors/dates/tags and any interesting metadata, the more the better
+    + get authors/date and any interesting metadata, the more the better
+        - OPTIONALS (gets you more points):
+            * source (facebook, twitter, newyorktimes, e.g.)
+            * tags (or topics) may be extracted from most used words if not available
+            * location (domain IP provenance)
 - the metadata and the text of the article is stored in db
     + mongodb collection
 - duplicates are not allowed

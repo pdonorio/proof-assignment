@@ -1,3 +1,0 @@
-httpie
-newspaper3k
-notebook==5.6.0

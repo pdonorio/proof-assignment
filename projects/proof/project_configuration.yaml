@@ -1,22 +1,15 @@
+
 project:
-  title: The proof platform
-  description: Towards an MVP
+  title: The proof assigment
+  description: Have fun with backend coding
   version: 0.0.1
-  rapydo: 0.6.2
+  rapydo: 0.6.3
+
 variables:
   env:
     AUTH_SERVICE: mongo
-    ALCHEMY_API_DB: proof
-    # ALCHEMY_DBS: 'proof SQL_API'
-    ALCHEMY_USER: admin
-    ALCHEMY_PASSWORD: somenicelongpasswordtowritedown
-    FRONTEND_ENABLE: 0
-    REACT_DEFAULT_PORT: 5000
-    NOTEBOOK_SERVER_PORT: 8888
     MONGO_DATABASE: proof
+    FRONTEND_ENABLE: 0
     TOKEN_DEFAULT_TTL: 86400 # 1 day in seconds
-# releases:
-#   '0.0.1':
-#     type: alpha
-#     rapydo: 0.6.2
-#     status: development
+    REACT_DEFAULT_PORT: 5000
+    # NOTEBOOK_SERVER_PORT: 8888

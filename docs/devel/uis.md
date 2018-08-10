@@ -35,3 +35,6 @@ Mongo Express server listening at http://0.0.0.0:8081
 ```
 
 Then go to the suggested URL, and play with it.
+
+NOTE: after you save some data with the current ODM definition you should find your data in a database called `proof`. It will not be there initially, though.
+

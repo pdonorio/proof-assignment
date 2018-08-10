@@ -6,7 +6,7 @@ We hope now you're all set and ready to write some code.
 
 ## add libraries to the backend image
 
-Downloading and parsing and article in Python might require some extra package to be installed. If after some research or from you experience you have one or more then go edit [this `requirements` file](../../projects/proof/backend/requirements.txt) and add as many as you want. 
+Downloading and parsing and article in Python might require some extra package to be installed. If after some research or from you experience you have one or more then go edit [this `requirements` file](https://github.com/pdonorio/proof-assignment/tree/master/projects/proof/backend/requirements.txt) and add as many as you want. 
 
 After saving your modifications you have to make sure you rebuild the backend container image and restart it. This is possible with the following commands:
 ```bash
@@ -28,7 +28,7 @@ ipython
 ## edit the main class code
 
 Currently there is only one custom endpoint in the flask server.
-It's `/api/articles` and we configured it to have `GET` and `POST` method enabled in our current [swagger configuration](../../projects/proof/backend/swagger).
+It's `/api/articles` and we configured it to have `GET` and `POST` method enabled in our current [swagger configuration](https://github.com/pdonorio/proof-assignment/tree/master/projects/proof/backend/swagger).
 
 The code for this endpoint is a class `Articles` expected to be located in the file `projects/proof/backend/apis/article.py`.
 

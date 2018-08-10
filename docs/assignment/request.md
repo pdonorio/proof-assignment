@@ -9,7 +9,7 @@ We need to create APIs on a Flask backend to download and parse articles submitt
 - the downloaded content is HTML-parsed 
     + you can add your Python library of preference there
     + get authors/date and any interesting metadata, the more the better
-        * OPTIONALS that gets you more points:
+        - OPTIONALS (gets you more points):
             * source (facebook, twitter, newyorktimes, e.g.)
             * tags (or topics) may be extracted from most used words if not available
             * location (domain IP provenance)

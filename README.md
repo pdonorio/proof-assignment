@@ -21,7 +21,7 @@ If you do want to continue, please:
     + [clone and install](docs/rapydo/install.md) what you need
     + launch your first [debug flask instance](docs/rapydo/start.md)
     + [remove everything](docs/rapydo/rm.md) when completed
-- Developing [**WORK IN PROGRESS**]
+- Developing
     + suggestion: organize your work [in a markdown list](projects/proof/notes/todo.md)
     + then [get your hands dirty](docs/devel/handsdirty.md)
     + explore the APIs and the data with some [pre-configured UI](docs/devel/uis.md) services
@@ -31,5 +31,3 @@ If you do want to continue, please:
     + You can [open an issue](https://github.com/rapydo/issues/issues)
     + You can [chat](https://gitter.im/rapydo) with us
     + Or you may email who gave you the exercise (if that is how you've got here) for direct questions on the assignment
-
-

@@ -25,11 +25,6 @@ If you do want to continue, please:
     + suggestion: organize your work [in a markdown list](projects/proof/notes/todo.md)
     + then [get your hands dirty](docs/devel/reacthd.md)
     + explore the APIs and the data with some [pre-configured UI](docs/devel/uis.md) services
-<!--
-    + then [get your hands dirty](docs/devel/handsdirty.md)
-    + if you prefere a TDD approach, you may (and should) [write unittests](docs/devel/unittests.md)
-    + you can also [add a new endpoint](docs/devel/new.md)
--->
 - Feedback on exercise and framework
     + You can [open an issue](https://github.com/rapydo/issues/issues)
     + You can [chat](https://gitter.im/rapydo) with us

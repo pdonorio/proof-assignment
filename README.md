@@ -22,13 +22,8 @@ If you do want to continue, please:
     + launch your first [debug flask instance](docs/rapydo/start.md)
 - Developing [**WORK IN PROGRESS**]
     + suggestion: organize your work [in a markdown list](projects/proof/notes/todo.md)
-    + TODO: add libraries to the project
-    rapydo --services backend build
-        + TODO: edit the main class code
-        + TODO: call from command line
-    + TODO: interfaces
-        + TODO: checkout mongo db from UI
-        + TODO: call from swagger UI
+    + then [get your hands dirty](docs/devel/handsdirty.md)
+    + explore the APIs and the data with some [pre-configured UI](docs/devel/uis.md) services
     + TODO: write unittests
     + TODO: add a new endpoint
 - Feedback on exercise and framework

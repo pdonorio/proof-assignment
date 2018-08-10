@@ -71,8 +71,8 @@ services:
     working_dir: /app
     volumes:
       - ${VANILLA_DIR}/projects/${COMPOSE_PROJECT_NAME}/frontend:/app
-      # to build ?
-      - ${VANILLA_DIR}/projects/${COMPOSE_PROJECT_NAME}/frontend/package.json:/rapydo/package.json
+      # # to build ?
+      # - ${VANILLA_DIR}/projects/${COMPOSE_PROJECT_NAME}/frontend/package.json:/rapydo/package.json
 
   # #####################################
   # postgres:

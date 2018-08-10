@@ -25,7 +25,7 @@ If you do want to continue, please:
     + then [get your hands dirty](docs/devel/handsdirty.md)
     + explore the APIs and the data with some [pre-configured UI](docs/devel/uis.md) services
     + if you prefere a TDD approach, you may (and should) [write unittests](docs/devel/unittests.md)
-    + TODO: add a new endpoint
+    + you can also [add a new endpoint](docs/devel/new.md)
 - Feedback on exercise and framework
     + You can [open an issue](https://github.com/rapydo/issues/issues)
     + You can [chat](https://gitter.im/rapydo) with us

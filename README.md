@@ -19,6 +19,7 @@ If you do want to continue, please:
 - About the `RAPyDo` framework
     + brief [intro](docs/rapydo/intro.md)
     + [clone and install](docs/rapydo/install.md) what you need
+    + [configure](docs/rapydo/configure.md) your project
     + launch your first [debug flask instance](docs/rapydo/start.md)
     + [remove everything](docs/rapydo/rm.md) when completed
 - Developing

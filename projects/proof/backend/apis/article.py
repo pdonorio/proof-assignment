@@ -2,7 +2,7 @@
 
 from restapi.rest.definition import EndpointResource
 from proof.apis import SERVICE_NAME
-# from utilities import htmlcodes as hcodes
+from proof.services.article_parser import parse_article
 from utilities.logs import get_logger
 
 log = get_logger(__name__)
@@ -22,16 +22,13 @@ class Articles(EndpointResource):
         mongo = self.get_service_instance(SERVICE_NAME)
         log.debug('Mongo ODM handler: %s', mongo)
 
-        mongo.Examples.objects.all()
-        # custom ODM models (like `Examples`) can be added in
-        # projects/proof/backend/models/mongo.py
-        # documentation for queries at:
-        # https://pymodm.readthedocs.io/en/0.4.0
-        #   /getting-started.html#accessing-data
+        if url:
+            return mongo.Article.objects.get(url=url)
 
         # you can safely return python built-in types
         # that can be encoded with the json library
-        return 'To be implemented'
+        articles = mongo.Article.objects.limit(10)
+        return list(articles.values())
 
     def post(self):
         """
@@ -41,16 +38,18 @@ class Articles(EndpointResource):
         log.info('Request: submitting an article for parsing')
 
         # Try to get input
-        inputs = self.get_input()
-        log.pp(inputs)
+        parameters = self.get_input()
+        log.pp(parameters)
 
-        # if url is None:
-        #     return self.send_errors(
-        #         message='You must submit a url for parsing!'
-        #     )
+        url = parameters.get('URI')
 
-        # to store data on mongo via ODM:
-        # https://pymodm.readthedocs.io/en/0.4.0
-        #   /getting-started.html#creating-data
+        if not url:
+            return self.send_errors(
+                message='You must submit a url for parsing!'
+            )
 
-        return 'To be implemented'
+        article_data = parse_article(url)
+        mongo = self.get_service_instance(SERVICE_NAME)
+        article = mongo.Article(**article_data).save()
+
+        return list(article)

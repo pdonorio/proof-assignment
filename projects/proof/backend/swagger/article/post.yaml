@@ -7,8 +7,8 @@ allarticles:
   responses:
     '200':
       description: create a new article entry in Mongo!
-  # parameters:
-  #   - name: URI
-  #     in: query
-  #     type: string
-  #     description: the URI for the articles submitted
+  parameters:
+     - name: URI
+       in: query
+       type: string
+       description: the URI for the articles submitted

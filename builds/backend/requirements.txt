@@ -1,1 +1,6 @@
+articleDateExtractor==0.20
+beautifulsoup4==4.6.3
+lxml==4.2.4
+maxminddb-geolite2==2018.703
 pymodm==0.4.0
+TextBlob==0.15.1

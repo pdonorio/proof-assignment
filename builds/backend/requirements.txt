@@ -1,1 +1,9 @@
 pymodm==0.4.0
+beautifulsoup4==4.6.0
+newspaper3k==0.2.6
+geotext==0.4.0
+geopy==1.16.0
+geojson==2.4.0
+validators==0.12.2
+spacy==2.0.12
+https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.0.0/en_core_web_sm-2.0.0.tar.gz#en_core_web_sm

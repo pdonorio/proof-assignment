@@ -44,10 +44,15 @@ class Articles(EndpointResource):
         inputs = self.get_input()
         log.pp(inputs)
 
-        # if url is None:
-        #     return self.send_errors(
-        #         message='You must submit a url for parsing!'
-        #     )
+        if mongo.Examples.objects.filter(url = cleaned_info['input url']).exists():
+            return self.send_errors(
+                message='This article has already been submitted!'
+            )
+
+        if url is None:
+            return self.send_errors(
+                message='You must submit a url for parsing!'
+            )
 
         # to store data on mongo via ODM:
         # https://pymodm.readthedocs.io/en/0.4.0

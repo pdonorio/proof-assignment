@@ -28,9 +28,9 @@ class ProofArticle(MongoModel):
     truth = fields.BooleanField(blank=True)  # Mostly True / Mostly False
     title = fields.CharField(unique=True, blank=True)
     text = fields.CharField(blank=True)
-    date = fields.DateTimeField(blank=Trues)
+    date = fields.DateTimeField(blank=True)
     value = fields.IntegerField(default=1)
-    url = fields.CharField()
+    url = fields.URLField()
 
     def save(self, *args, **kwargs):
         self.text = self.scrape_text()

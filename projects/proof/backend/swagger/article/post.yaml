@@ -6,9 +6,17 @@ allarticles:
   summary: Unauthenticated article posting
   responses:
     '200':
-      description: create a new article entry in Mongo!
-  # parameters:
-  #   - name: URI
-  #     in: query
-  #     type: string
-  #     description: the URI for the articles submitted
+      description: create a new article entry
+  consumes:
+      - application/json
+  parameters:
+    - in: body
+      name: body
+      description: Article Url.
+      schema:
+        type: object
+        required:
+          - url
+        properties:
+          url:
+            type: string

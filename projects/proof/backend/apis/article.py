@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import requests
 
 from restapi.rest.definition import EndpointResource
 from proof.apis import SERVICE_NAME
@@ -43,14 +44,45 @@ class Articles(EndpointResource):
         # Try to get input
         inputs = self.get_input()
         log.pp(inputs)
+        url = inputs.get('url')
 
-        # if url is None:
-        #     return self.send_errors(
-        #         message='You must submit a url for parsing!'
-        #     )
+        if url is None:
+            return self.send_errors(
+                message='You must submit a url for parsing!', code=400
+            )
+
+        try:
+            result = requests.head(url)
+        except requests.exceptions.MissingSchema:
+            return self.send_errors(
+                message='The submitted url is not valid.', code=400
+            )
+        except requests.ConnectionError:
+            return self.send_errors(
+                message='Connection error occurred.', code=400
+            )
+        except requests.TooManyRedirects:
+            return self.send_errors(
+                message='To many redirects occurred.', code=400
+            )
+        except requests.Timeout:
+            return self.send_errors(
+                message='Connection time out.', code=400
+            )
+        except requests.HTTPError:
+            return self.send_errors(
+                message='A http error occurred.', code=400
+            )
+
+        log.info('Printing head')
+        log.pp(result)
 
         # to store data on mongo via ODM:
         # https://pymodm.readthedocs.io/en/0.4.0
         #   /getting-started.html#creating-data
 
         return 'To be implemented'
+
+    @staticmethod
+    def is_valid_result(result):
+        return result.status_code != 200

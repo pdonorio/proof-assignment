@@ -18,11 +18,12 @@ class Examples(MongoModel):
     List of possible fields
     https://pymodm.readthedocs.io/en/0.4.0/api/index.html#model-fields
     """
-    name = fields.CharField(primary_key=True)
-    truth = fields.BooleanField()  # Mostly True / Mostly False
-    description = fields.CharField()
+    url = fields.URLField()
+    date = fields.DateTimeField()
+    author = fields.CharField(max_length=250)
+    text = fields.CharField(max_length=5000)
+    tag = fields.CharField(max_length=100)
     created = fields.DateTimeField()
-    value = fields.IntegerField(default=1)
 
     class Meta:
         connection_alias = APP_DB

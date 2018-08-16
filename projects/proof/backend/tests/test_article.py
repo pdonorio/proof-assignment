@@ -2,12 +2,22 @@
 import json
 import requests
 
+from proof.models.mongo import ArticleModel
 from restapi.tests import BaseTests, API_URI
 from utilities import htmlcodes as hcodes
 from utilities.logs import get_logger
 from unittest.mock import patch
 
 log = get_logger(__name__)
+
+test_file = open("tests/custom/test_article.html").read()
+
+
+class MockResponse(object):
+
+    def __init__(self):
+        self.status_code = 200
+        self.content = test_file
 
 
 class TestArticle(BaseTests):
@@ -18,6 +28,10 @@ class TestArticle(BaseTests):
     """
 
     _main_endpoint = API_URI + '/articles'
+
+    @staticmethod
+    def clean_existing_elements():
+        ArticleModel.objects.all().delete()
 
     def test_1_post_return_error_to_none_urls(self, client):
         """
@@ -102,3 +116,50 @@ class TestArticle(BaseTests):
         mock.assert_called_once_with('https://google.com')
         assert r.status_code == hcodes.HTTP_BAD_REQUEST
         assert data['Response']['errors'] == ['A http error occurred.']
+
+    @patch("requests.get")
+    @patch("requests.head")
+    def test_7_post_add_new_article(self, mock_head, mock_get, client):
+        """
+        testing when adding a new article.
+        """
+        self.clean_existing_elements()
+        mock_get.return_value = MockResponse()
+        mock_head.return_value = MockResponse()
+
+        # call the method `post`
+        client.post(self._main_endpoint, data={'url': 'http://newsfromnyt.com'})
+
+        # Db query
+        article_qs = ArticleModel.objects.raw({"url": 'http://newsfromnyt.com'})
+
+        # Assert
+        mock_get.assert_called_once_with('http://newsfromnyt.com')
+        assert article_qs.count() == 1
+        article_qs = article_qs.first()
+        assert article_qs.title == "The Unlikely Activists Who Took On Silicon" \
+                                   " Valley — and Won - The New York Times"
+        assert article_qs.tag == "Mactaggart"
+
+    @patch("requests.get")
+    @patch("requests.head")
+    def test_8_post_ignore_article_with_almost_same_title(self, mock_head, mock_get, client):
+        """
+        testing when adding a new article.
+        """
+        self.clean_existing_elements()
+        mock_get.return_value = MockResponse()
+        mock_head.return_value = MockResponse()
+        client.post(self._main_endpoint, data={'url': 'http://newsfromnyt.com'})
+
+        # call the method `post`
+        r = client.post(self._main_endpoint, data={'url': 'http://mydifferentcity.com'})
+        data = json.loads(r.data)
+
+        # Db query
+        article_qs = ArticleModel.objects.raw({"url": 'http://mydifferentcity.com'})
+
+        # Assert
+        assert article_qs.count() == 0
+        assert r.status_code == hcodes.HTTP_BAD_REQUEST
+        assert data['Response']['errors'] == ['A article with almost same title was already submitted.']

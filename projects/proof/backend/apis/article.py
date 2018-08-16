@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
 import requests
 
+from bs4 import BeautifulSoup
+from datetime import datetime
+
 from restapi.rest.definition import EndpointResource
 from proof.apis import SERVICE_NAME
-# from utilities import htmlcodes as hcodes
+from utilities import htmlcodes as hcodes
 from utilities.logs import get_logger
 
 log = get_logger(__name__)
+
+LIST_IGNORED_WORDS = ['that', 'this', 'those']
 
 
 class Articles(EndpointResource):
@@ -23,7 +28,7 @@ class Articles(EndpointResource):
         mongo = self.get_service_instance(SERVICE_NAME)
         log.debug('Mongo ODM handler: %s', mongo)
 
-        mongo.Examples.objects.all()
+        mongo.ArticleModel.objects.all()
         # custom ODM models (like `Examples`) can be added in
         # projects/proof/backend/models/mongo.py
         # documentation for queries at:
@@ -43,46 +48,84 @@ class Articles(EndpointResource):
 
         # Try to get input
         inputs = self.get_input()
-        log.pp(inputs)
         url = inputs.get('url')
 
         if url is None:
             return self.send_errors(
-                message='You must submit a url for parsing!', code=400
+                message='You must submit a url for parsing!', code=hcodes.HTTP_BAD_REQUEST
+            )
+
+        # connect to mongo
+        mongo = self.get_service_instance(SERVICE_NAME)
+
+        article_qs = mongo.ArticleModel.objects.raw({"url": url})
+
+        if article_qs.count() > 0:
+            return self.send_errors(
+                message='The provided url was already been submitted.', code=hcodes.HTTP_BAD_REQUEST
             )
 
         try:
             result = requests.head(url)
+            if result.status_code != 200:
+                raise requests.HTTPError
         except requests.exceptions.MissingSchema:
             return self.send_errors(
-                message='The submitted url is not valid.', code=400
+                message='The submitted url is not valid.', code=hcodes.HTTP_BAD_REQUEST
             )
         except requests.ConnectionError:
             return self.send_errors(
-                message='Connection error occurred.', code=400
+                message='Connection error occurred.', code=hcodes.HTTP_BAD_REQUEST
             )
         except requests.TooManyRedirects:
             return self.send_errors(
-                message='To many redirects occurred.', code=400
+                message='To many redirects occurred.', code=hcodes.HTTP_BAD_REQUEST
             )
         except requests.Timeout:
             return self.send_errors(
-                message='Connection time out.', code=400
+                message='Connection time out.', code=hcodes.HTTP_BAD_REQUEST
             )
         except requests.HTTPError:
             return self.send_errors(
-                message='A http error occurred.', code=400
+                message='A http error occurred.', code=hcodes.HTTP_BAD_REQUEST
             )
 
-        log.info('Printing head')
-        log.pp(result)
+        result = requests.get(url)
+        soup = BeautifulSoup(result.content, 'html.parser')
+        title = soup.head.title.get_text()
+        if self.check_title(db_connection=mongo, title=title):
+            return self.send_errors(
+                message='A article with almost same title was already submitted.', code=hcodes.HTTP_BAD_REQUEST
+            )
+        text = ""
+        for tag_p in soup.find_all('p'):
+            text += "\n" + tag_p.get_text()
 
-        # to store data on mongo via ODM:
-        # https://pymodm.readthedocs.io/en/0.4.0
-        #   /getting-started.html#creating-data
+        words_dict = {}
+        word_list = text.split()
+        for word in word_list:
+            word = word.strip()
+            if len(word) < 4 or word in LIST_IGNORED_WORDS:
+                continue
+            if word in words_dict:
+                words_dict[word] += 1
+            else:
+                words_dict[word] = 1
 
-        return 'To be implemented'
+        most_repeated_word = max(words_dict, key=words_dict.get)
+
+        mongo.ArticleModel(
+            url=url,
+            date=datetime.now(),
+            text=text,
+            title=title,
+            tag=most_repeated_word,
+        ).save()
+
+        return "Article created successfully"
 
     @staticmethod
-    def is_valid_result(result):
-        return result.status_code != 200
+    def check_title(db_connection, title):
+        return db_connection.ArticleModel.objects.raw(
+            {'title': title}
+        ).count() > 0

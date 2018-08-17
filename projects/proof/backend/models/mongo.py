@@ -3,6 +3,7 @@
 """
 https://pymodm.readthedocs.io/en/0.4.0/getting-started.html#defining-models
 """
+import hashlib
 from BeautifulSoup import BeautifulSoup
 from pymodm import MongoModel, fields
 from urllib.request import urlopen
@@ -55,13 +56,12 @@ class ProofArticle(MongoModel):
         return parse_title
 
     def parse_name(self):
-       soup = BeautifulSoup(requests.get(s).content, 'html.parser')
-       meta = soup.find('meta', {'name': 'byl'})
-       parse_name = meta["content"]
-       return parse_name
+        soup = BeautifulSoup(requests.get(s).content, 'html.parser')
+        meta = soup.find('meta', {'name': 'byl'})
+        parse_name = meta["content"]
+        return parse_name
 
     def parse_date(self):
-       soup = BeautifulSoup(requests.get(s).content, 'html.parser')
-       meta = soup.find('meta', {'name': 'byl'})
-       parse_date = meta["content"]
-       return parse_date
+        page = urllib.request.urlopen(self.url)
+        parse_date = page.info().getdate('last-modified')
+        return parse_date

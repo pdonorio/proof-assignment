@@ -32,7 +32,7 @@ class Articles(EndpointResource):
         log.debug('Mongo ODM handler: %s', mongo)
 
         try:
-            # If the url variable is passed on the GET request return only the one article.
+            # If the url variable is passed on the GET request, return only one article.
             inputs = self.get_input()
             url = inputs['url']
             # Does the url exist in our database?
@@ -74,11 +74,13 @@ class Articles(EndpointResource):
         origin = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
         data = requests.get("http://ipinfo.io/json").json()
         flagged = False
-        # Check for plagiarism. Very inefficient. Using indexes will make this a lot faster probably.
+        # Check for plagiarism. Very inefficient. Using indexes could make this a lot faster.
         for art in mongo.Article_M.objects.all():
+            # Check for title similarity.
             title_ratio = SequenceMatcher(None, art.title, article.title).ratio()
             if title_ratio > 0.95:
                 return self.send_errors(message='An article with a very similar title has already been posted.')
+            # Check  for content similarity.
             text_ratio = SequenceMatcher(None, art.text, article.text).ratio()
             if text_ratio > 0.8:
                 # We don't inform the user of his transgression.
@@ -91,7 +93,7 @@ class Articles(EndpointResource):
         return art_obj.to_son()
 
     def save_to_db(self, article, mongo, origin, data, url, flagged):
-        """ Save to database if it doesn't exit already."""
+        """ Save to database if it doesn't exist already."""
         # Check for empty lists
         authors, movies, images, keywords = self.determine_if_lists_are_empty(article)
         try:

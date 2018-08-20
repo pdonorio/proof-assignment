@@ -78,7 +78,9 @@ class Articles(EndpointResource):
         for art in mongo.Article_M.objects.all():
             # Check for title similarity.
             title_ratio = SequenceMatcher(None, art.title, article.title).ratio()
-            if title_ratio > 0.95:
+            if title_ratio == 1:
+                return self.send_errors(message='An article with the same title already exists.')
+            elif title_ratio > 0.90:
                 return self.send_errors(message='An article with a very similar title has already been posted.')
             # Check  for content similarity.
             text_ratio = SequenceMatcher(None, art.text, article.text).ratio()
@@ -88,23 +90,21 @@ class Articles(EndpointResource):
                 break
 
         # Save to database if not already in there.
-        art_obj = self.save_to_db(article, mongo, origin, data, url, flagged)
-
-        return art_obj.to_son()
+        # art_obj = self.save_to_db(article, mongo, origin, data, url, flagged)
+        self.save_to_db(article, mongo, origin, data, url, flagged)
+        return 'Success'
 
     def save_to_db(self, article, mongo, origin, data, url, flagged):
         """ Save to database if it doesn't exist already."""
         # Check for empty lists
-        authors, movies, images, keywords = self.determine_if_lists_are_empty(article)
+        authors, movies, images, keywords, publish_date = self.determine_if_lists_are_empty(article)
         try:
-            art_obj = mongo.Article_M(url=url, title=article.title, authors=authors, publish_date=article.publish_date,
-                                      text=article.text, keywords=keywords, summary=article.summary, source=origin,
-                                      movies=movies, images=images, ip=request.remote_addr, city=data['city'],
-                                      country=data['country'], region=data['region'], flagged=flagged).save(
-                force_insert=True)
+            mongo.Article_M(url=url, title=article.title, authors=authors, publish_date=publish_date,
+                            text=article.text, keywords=keywords, summary=article.summary, source=origin,
+                            movies=movies, images=images, ip=request.remote_addr, city=data['city'],
+                            country=data['country'], region=data['region'], flagged=flagged).save(force_insert=True)
         except pymongo.errors.DuplicateKeyError:
             return self.send_errors(message='This article already exists.')
-        return art_obj
 
     @staticmethod
     def determine_if_lists_are_empty(article):
@@ -126,5 +126,9 @@ class Articles(EndpointResource):
             movies = ['Not Found.']
         else:
             movies = article.authors
+        if not article.publish_date:
+            publish_date = 'Not Found.'
+        else:
+            publish_date = article.publish_date
 
-        return authors, movies, images, keywords
+        return authors, movies, images, keywords, publish_date

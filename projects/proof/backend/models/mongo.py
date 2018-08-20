@@ -32,7 +32,7 @@ class Article_M(MongoModel):
     url = fields.CharField(primary_key=True)
     title = fields.CharField()
     authors = fields.ListField(fields.CharField(), default=list)
-    publish_date = fields.DateTimeField()
+    publish_date = fields.CharField()
     text = fields.CharField()
     keywords = fields.ListField(fields.CharField())
     summary = fields.CharField()

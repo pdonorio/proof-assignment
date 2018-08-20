@@ -4,10 +4,8 @@
 https://pymodm.readthedocs.io/en/0.4.0/getting-started.html#defining-models
 """
 
-from pymodm import MongoModel, fields
-from pymongo import TEXT
-from pymongo.operations import IndexModel
 from proof.apis import APP_DB
+from pymodm import MongoModel, fields
 
 
 ###############

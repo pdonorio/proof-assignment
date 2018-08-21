@@ -1,17 +1,15 @@
 # -*- coding: utf-8 -*-
 import requests
 
-from bs4 import BeautifulSoup
 from datetime import datetime
 
 from restapi.rest.definition import EndpointResource
 from proof.apis import SERVICE_NAME
+from proof.apis.article_parser import ArticleParser
 from utilities import htmlcodes as hcodes
 from utilities.logs import get_logger
 
 log = get_logger(__name__)
-
-LIST_IGNORED_WORDS = ['that', 'this', 'those']
 
 
 class Articles(EndpointResource):
@@ -90,36 +88,18 @@ class Articles(EndpointResource):
                 message='A http error occurred.', code=hcodes.HTTP_BAD_REQUEST
             )
 
-        result = requests.get(url)
-        soup = BeautifulSoup(result.content, 'html.parser')
-        title = soup.head.title.get_text()
-        if self.check_title(db_connection=mongo, title=title):
+        article_parser = ArticleParser(url)
+        if self.check_title(db_connection=mongo, title=article_parser.get_title()):
             return self.send_errors(
                 message='A article with almost same title was already submitted.', code=hcodes.HTTP_BAD_REQUEST
             )
-        text = ""
-        for tag_p in soup.find_all('p'):
-            text += "\n" + tag_p.get_text()
-
-        words_dict = {}
-        word_list = text.split()
-        for word in word_list:
-            word = word.strip()
-            if len(word) < 4 or word in LIST_IGNORED_WORDS:
-                continue
-            if word in words_dict:
-                words_dict[word] += 1
-            else:
-                words_dict[word] = 1
-
-        most_repeated_word = max(words_dict, key=words_dict.get)
 
         mongo.ArticleModel(
             url=url,
             date=datetime.now(),
-            text=text,
-            title=title,
-            tag=most_repeated_word,
+            text=article_parser.get_text(),
+            title=article_parser.get_title(),
+            tag=article_parser.get_tags(),
         ).save()
 
         return "Article created successfully"

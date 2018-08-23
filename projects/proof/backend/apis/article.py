@@ -2,6 +2,7 @@
 import requests
 
 from datetime import datetime
+from difflib import SequenceMatcher
 
 from restapi.rest.definition import EndpointResource
 from proof.apis import SERVICE_NAME
@@ -89,10 +90,13 @@ class Articles(EndpointResource):
             )
 
         article_parser = ArticleParser(url)
-        if self.check_title(db_connection=mongo, title=article_parser.get_title()):
-            return self.send_errors(
-                message='A article with almost same title was already submitted.', code=hcodes.HTTP_BAD_REQUEST
-            )
+
+        # Check similarity between submitted article and existing articles
+        check_text_similarity = self.has_similar_text_article(db_connection=mongo,
+                                                              article_title=article_parser.get_title(),
+                                                              article_text=article_parser.get_text())
+        if check_text_similarity:
+            return check_text_similarity
 
         mongo.ArticleModel(
             url=url,
@@ -104,8 +108,28 @@ class Articles(EndpointResource):
 
         return "Article created successfully"
 
-    @staticmethod
-    def check_title(db_connection, title):
-        return db_connection.ArticleModel.objects.raw(
-            {'title': title}
-        ).count() > 0
+    def has_similar_text_article(self, db_connection, article_title, article_text):
+        """
+        Check compare given article_title with each article title in the database.
+        Check compare given article_text with each article text in the database.
+        In case to find a similarity above 80% return a error
+        Otherwise return False
+        """
+        for article_model in db_connection.ArticleModel.objects.all():
+            # Compare article title
+            article_title_ratio_similarity = SequenceMatcher(None, article_model.title, article_title).ratio()
+            if article_title_ratio_similarity > 0.8:
+                return self.send_errors(
+                    message='An article with a very similar title was already submitted.',
+                    code=hcodes.HTTP_BAD_REQUEST
+                )
+
+            # Compare article text
+            article_text_ratio_similarity = SequenceMatcher(None, article_model.text, article_text).ratio()
+            if article_text_ratio_similarity > 0.8:
+                return self.send_errors(
+                    message='An article with a very similar text was already submitted.',
+                    code=hcodes.HTTP_BAD_REQUEST
+                )
+
+        return False

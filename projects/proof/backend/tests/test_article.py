@@ -152,6 +152,11 @@ class TestArticle(BaseTests):
         mock_head.return_value = MockResponse()
         client.post(self._main_endpoint, data={'url': 'http://newsfromnyt.com'})
 
+        # Edit Article to have almost same title
+        article = ArticleModel.objects.get({"url": 'http://newsfromnyt.com'})
+        article.title += '-'
+        article.save()
+
         # call the method `post`
         r = client.post(self._main_endpoint, data={'url': 'http://mydifferentcity.com'})
         data = json.loads(r.data)
@@ -162,4 +167,33 @@ class TestArticle(BaseTests):
         # Assert
         assert article_qs.count() == 0
         assert r.status_code == hcodes.HTTP_BAD_REQUEST
-        assert data['Response']['errors'] == ['A article with almost same title was already submitted.']
+        assert data['Response']['errors'] == ['An article with a very similar title was already submitted.']
+
+    @patch("requests.get")
+    @patch("requests.head")
+    def test_9_post_ignore_article_with_almost_same_text(self, mock_head, mock_get, client):
+        """
+        testing when adding a new article.
+        """
+        self.clean_existing_elements()
+        mock_get.return_value = MockResponse()
+        mock_head.return_value = MockResponse()
+        client.post(self._main_endpoint, data={'url': 'http://newsfromnyt.com'})
+
+        # Edit Article to have almost same title
+        article = ArticleModel.objects.get({"url": 'http://newsfromnyt.com'})
+        article.title = 'My Completely different title.'
+        article.text += ' - '
+        article.save()
+
+        # call the method `post`
+        r = client.post(self._main_endpoint, data={'url': 'http://mydifferentcity.com'})
+        data = json.loads(r.data)
+
+        # Db query
+        article_qs = ArticleModel.objects.raw({"url": 'http://mydifferentcity.com'})
+
+        # Assert
+        assert article_qs.count() == 0
+        assert r.status_code == hcodes.HTTP_BAD_REQUEST
+        assert data['Response']['errors'] == ['An article with a very similar text was already submitted.']
